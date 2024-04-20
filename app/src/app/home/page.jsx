@@ -40,10 +40,10 @@ const Home = () => {
                                 <div>
                                     <form>
                                         <h1>Create Account</h1>
-                                        <input type="number" value="" placeholder="Enter Price" />
-                                        <input type="number" value="" placeholder="Enter Area" />
-                                        <input type="text" value="" placeholder="Enter Address" />
-                                        <input type="text" value="" placeholder="Enter Blockchain Address of Buyer" />
+                                        <input type="number" placeholder="Enter Price" />
+                                        <input type="number" placeholder="Enter Area" />
+                                        <input type="text" placeholder="Enter Address" />
+                                        <input type="text" placeholder="Enter Blockchain Address of Buyer" />
                                         <button onClick={(e) => { createContract(e) }}>Create Contract</button>
                                     </form>
                                 </div>

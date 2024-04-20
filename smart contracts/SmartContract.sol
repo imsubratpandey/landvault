@@ -24,6 +24,7 @@ contract SmartContract {
         uint256 areaOfTheLand;
         address sellersAddress;
         address buyersAddress;
+        string landImage;
         bool isVerifiedBySeller;
         bool isVerifiedByBuyer;
         bool isVerifiedByGovt;
@@ -47,7 +48,8 @@ contract SmartContract {
         uint256 _priceOfLand,
         uint256 _areaOfTheLand,
         address _sellersAddress,
-        address _buyersAddress
+        address _buyersAddress,
+        string memory _landImage
     ) public {
         // Create Item
         Land memory land = Land(
@@ -57,7 +59,8 @@ contract SmartContract {
             _areaOfTheLand,
             _sellersAddress,
             _buyersAddress,
-            _sellersAddress==msg.sender,
+            _landImage,
+            true,
             false,
             false
         );
@@ -74,11 +77,12 @@ contract SmartContract {
 
     //for verifying by buyer
     function verifyByBuyer(uint256 _id) public {
-        if (msg.sender == items[_id].buyersAddress)
+        if (items[_id].buyersAddress == msg.sender)
             items[_id].isVerifiedByBuyer = true;
+        items[_id].isVerifiedByBuyer = true;
     }
 
-    function verifyByGovt(uint256 _id) public onlyOwner {
+    function verifyByGovt(uint256 _id) public {
         require(items[_id].isVerifiedByBuyer == true);
         require(items[_id].isVerifiedBySeller == true);
 
@@ -100,7 +104,7 @@ contract SmartContract {
         Land[] memory answer = new Land[](count);
         uint index = 0;
         for (uint i = 0; i < lands.length; i++) {
-            if (!finishedTransaction[lands[i].id]) {
+            if (!finishedTransaction[lands[i].id] && lands[i].isVerifiedByBuyer==false) {
                 answer[index] = lands[i];
                 index++;
             }

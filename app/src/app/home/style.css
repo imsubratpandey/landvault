@@ -29,7 +29,7 @@ h1 {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 768px;
+    width: 100vh;
     max-width: 100%;
     min-height: 480px;
     display: flex;
@@ -102,8 +102,9 @@ h1 {
 /* Hide spinner buttons on number inputs */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0; /* Optional - if you want to remove the space left by the buttons */
+    -webkit-appearance: none;
+    margin: 0;
+    /* Optional - if you want to remove the space left by the buttons */
 }
 
 .account-detail {
@@ -125,8 +126,56 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+
     a {
         cursor: pointer;
         font-size: medium;
     }
+
+}
+
+.navigator-items:hover {
+    color: #512da8;
+}
+
+table {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 5px;
+    text-align: left;
+}
+
+.contract-manager {
+    height: 80%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    height: 2px;
+    width: 2px;
+    background-color: rgb(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #909090;
+    border-radius: 8px;
+}
+
+.pend-cont-but {
+    cursor: default !important;
+    position: relative;
+    right: 0;
 }

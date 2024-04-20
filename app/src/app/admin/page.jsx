@@ -52,8 +52,8 @@ const Admin = () => {
                         <>
                             <h1 className="account-detail">Account Connected: {address.slice(0, 6) + "..." + address.slice(38, 42)}</h1>
                             <div className="navigator">
-                                <a onClick={() => { getRecievedContract(); setDisplayId(0); }}>Recieved Contract</a>
-                                <a onClick={() => { getAllContract(); setDisplayId(1); }}>All Contract</a>
+                                <a className='navigator-items' onClick={() => { getRecievedContract(); setDisplayId(0); }}>Recieved Contract</a>
+                                <a className='navigator-items' onClick={() => { getAllContract(); setDisplayId(1); }}>All Contract</a>
                             </div>
                             <div className="contract-manager">
                                 {

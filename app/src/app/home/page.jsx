@@ -30,6 +30,32 @@ const Home = () => {
             console.log("Please connect metamask first");
         }
     }
+    const getPendingContract = async () => {
+        e.preventDefault();
+        if (address != 0) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+            // await contractInstance.func();
+        }
+        else {
+            console.log("Please connect metamask first");
+        }
+    }
+    const getRecievedContract = async () => {
+        e.preventDefault();
+        if (address != 0) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+            // await contractInstance.func();
+        }
+        else {
+            console.log("Please connect metamask first");
+        }
+    }
     return (
         <>
             <div className="container" id="container">
@@ -39,8 +65,8 @@ const Home = () => {
                             <h1 className="account-detail">Account Connected: {address.slice(0, 6) + "..." + address.slice(38, 42)}</h1>
                             <div className="navigator">
                                 <a onClick={() => setDisplayId(0)}>Create Contract</a>
-                                <a onClick={() => setDisplayId(1)}>Pending Contract</a>
-                                <a onClick={() => setDisplayId(2)}>Recieved Contract</a>
+                                <a onClick={() => { getPendingContract(); setDisplayId(1); }}>Pending Contract</a>
+                                <a onClick={() => { getRecievedContract(); setDisplayId(2); }}>Recieved Contract</a>
                             </div>
                             <div className="contract-manager">
                                 {

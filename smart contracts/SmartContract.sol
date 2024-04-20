@@ -72,5 +72,83 @@ contract SmartContract {
         emit List(_addressOfTheLand, _priceOfLand, _areaOfTheLand, _sellersAddress, _buyersAddress);
     }
 
-    
+    //for verifying by buyer
+    function verifyByBuyer(uint256 _id) public {
+        if (msg.sender == items[_id].buyersAddress)
+            items[_id].isVerifiedByBuyer = true;
+    }
+
+    function verifyByGovt(uint256 _id) public onlyOwner {
+        require(items[_id].isVerifiedByBuyer == true);
+        require(items[_id].isVerifiedBySeller == true);
+
+        items[_id].isVerifiedByGovt = true;
+        finishedTransaction[_id] = true;
+    }
+
+
+    function getAllPendingTranscationFromBuyer(
+        address buyerAddress
+    ) public view returns (Land[] memory) {
+        Land[] memory lands = taskAssociatedWithABuyer[buyerAddress];
+        uint count = 0;
+        for (uint i = 0; i < lands.length; i++) {
+            if (!finishedTransaction[lands[i].id]) {
+                count++;
+            }
+        }
+        Land[] memory answer = new Land[](count);
+        uint index = 0;
+        for (uint i = 0; i < lands.length; i++) {
+            if (!finishedTransaction[lands[i].id]) {
+                answer[index] = lands[i];
+                index++;
+            }
+        }
+        return answer;
+    }
+
+    function getAllPendingTranscationFromSeller(
+        address sellerAddress
+    ) public view returns (Land[] memory) {
+        Land[] memory lands = taskAssociatedWithASeller[sellerAddress];
+        uint count = 0;
+        for (uint i = 0; i < lands.length; i++) {
+            if (!finishedTransaction[lands[i].id]) {
+                count++;
+            }
+        }
+        Land[] memory answer = new Land[](count);
+        uint index = 0;
+        for (uint i = 0; i < lands.length; i++) {
+            if (!finishedTransaction[lands[i].id]) {
+                answer[index] = lands[i];
+                index++;
+            }
+        }
+        return answer;
+    }
+
+    function getAllPendingTranscationFromGovt()
+        public
+        view
+        returns (Land[] memory)
+    {
+        uint count = 0;
+        for (uint i = 0; i < Tasks.length; i++) {
+            if (!finishedTransaction[Tasks[i]]) {
+                count++;
+            }
+        }
+        Land[] memory answer = new Land[](count);
+        uint index = 0;
+        for (uint i = 0; i < Tasks.length; i++) {
+            if (!finishedTransaction[Tasks[i]]) {
+                answer[index] = items[Tasks[i]];
+                index++;
+            }
+        }
+        return answer;
+    }
+
 }

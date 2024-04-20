@@ -95,3 +95,10 @@ h1 {
     outline: none;
     overflow: scroll;
 }
+
+/* Hide spinner buttons on number inputs */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Optional - if you want to remove the space left by the buttons */
+}

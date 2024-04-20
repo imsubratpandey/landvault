@@ -21,9 +21,10 @@ const Admin = () => {
         if (address != 0) {
             const provider = new ethers.BrowserProvider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
+            const signer = await provider.getSigner();
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-            // await contractInstance.func();
+            const result = await contractInstance.getAllPendingTranscationFromGovt();
+            console.log(result);
         }
         else {
             console.log("Please connect metamask first");
@@ -33,9 +34,10 @@ const Admin = () => {
         if (address != 0) {
             const provider = new ethers.BrowserProvider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
+            const signer = await provider.getSigner();
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-            // await contractInstance.func();
+            const result = await contractInstance.getAllTranscationFromGovt();
+            console.log(result);
         }
         
         else {

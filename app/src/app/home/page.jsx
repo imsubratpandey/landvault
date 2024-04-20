@@ -544,6 +544,11 @@ let contractAbi = [
 
 const Home = () => {
     const [address, setAddress] = useState("");
+    const [landAddress, setLandAddress] = useState("");
+    const [price, setPrice] = useState(0);
+    const [area, setArea] = useState(0);
+    const [buyerAddress, setBuyerAddress] = useState("");
+
     const [displayId, setDisplayId] = useState("");
     const connectMetamask = async (e) => {
         e.preventDefault();
@@ -563,7 +568,7 @@ const Home = () => {
             await provider.send("eth_requestAccounts", []);
             const signer = await provider.getSigner();
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-            const result = await contractInstance.list(1, "aman", 2, 1, "0xc03cb2B375D734B9fC55883f8484071f4CBf5cd5", "0x139DfeeF33EFD9d9eCA124fcca47524Be23aaa8b");
+            const result = await contractInstance.list(landAddress,price,area,address,buyerAddress);
             console.log(result);
         }
         else {
@@ -576,7 +581,7 @@ const Home = () => {
             await provider.send("eth_requestAccounts", []);
             const signer = await provider.getSigner();
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-            const result = await contractInstance.getAllPendingTranscationFromSeller("0xc03cb2B375D734B9fC55883f8484071f4CBf5cd5");
+            const result = await contractInstance.getAllPendingTranscationFromSeller(address);
             console.log(result);
         }
         else {
@@ -589,7 +594,7 @@ const Home = () => {
             await provider.send("eth_requestAccounts", []);
             const signer = await provider.getSigner();
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-            const result = await contractInstance.getAllPendingTranscationFromBuyer("0x139DfeeF33EFD9d9eCA124fcca47524Be23aaa8b");
+            const result = await contractInstance.getAllPendingTranscationFromBuyer(buyerAddress);
             console.log(result);
         }
         else {
@@ -615,10 +620,10 @@ const Home = () => {
                                             <div className="contract-window">
                                                 <form>
                                                     <h1>Create New Contract</h1>
-                                                    <input type="number" placeholder="Enter Price" />
-                                                    <input type="number" placeholder="Enter Area" />
-                                                    <input type="text" placeholder="Enter Address" />
-                                                    <input type="text" placeholder="Enter Blockchain Address of Buyer" />
+                                                    <input type="number" value={price} onChange={(e)=>setPrice(e.target.value)} placeholder="Enter Price" />
+                                                    <input type="number" value={area} onChange={(e)=> setArea(e.target.value)} placeholder="Enter Area" />
+                                                    <input type="text" value={landAddress} onChange={(e)=>setLandAddress(e.target.value)} placeholder="Enter Address" />
+                                                    <input type="text" value={buyerAddress} onChange={(e)=>setBuyerAddress(e.target.value)} placeholder="Enter Blockchain Address of Buyer" />
                                                     <button onClick={(e) => { createContract(e) }}>Create Contract</button>
                                                 </form>
                                             </div>

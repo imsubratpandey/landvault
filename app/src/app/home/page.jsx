@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import './style.css';
 
 const Home = () => {
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState("sdfgh");
     const connectMetamask = async (e) => {
         e.preventDefault();
         try {
@@ -16,15 +16,49 @@ const Home = () => {
             console.log(err)
         }
     }
+    const createContract = async (e) => {
+        e.preventDefault();
+        if (address != 0) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+            // await contractInstance.func();
+        }
+        else {
+            console.log("Please connect metamask first");
+        }
+    }
     return (
         <>
             <div className="container" id="container">
-                <div className="form-container sign-in">
-                    <form>
-                        <h1>Sign In</h1>
-                        <button onClick={(e) => connectMetamask(e)}>Login with Metamask</button>
-                    </form>
-                </div>
+                {
+                    (address) ?
+                        <>
+                            <div>
+                                <div></div>
+                                <div>
+                                    <form>
+                                        <h1>Create Account</h1>
+                                        <input type="number" value="" placeholder="Enter Price" />
+                                        <input type="number" value="" placeholder="Enter Area" />
+                                        <input type="text" value="" placeholder="Enter Address" />
+                                        <input type="text" value="" placeholder="Enter Blockchain Address of Buyer" />
+                                        <button onClick={(e) => { createContract(e) }}>Create Contract</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </>
+                        :
+                        <>
+                            <div className="form-container sign-in">
+                                <form>
+                                    <h1>Sign In</h1>
+                                    <button onClick={(e) => connectMetamask(e)}>Login with Metamask</button>
+                                </form>
+                            </div>
+                        </>
+                }
             </div>
         </>
     )

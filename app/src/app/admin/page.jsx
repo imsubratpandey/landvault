@@ -18,7 +18,6 @@ const Admin = () => {
         }
     }
     const getRecievedContract = async () => {
-        e.preventDefault();
         if (address != 0) {
             const provider = new ethers.BrowserProvider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
@@ -31,7 +30,6 @@ const Admin = () => {
         }
     }
     const getAllContract = async () => {
-        e.preventDefault();
         if (address != 0) {
             const provider = new ethers.BrowserProvider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
@@ -39,6 +37,7 @@ const Admin = () => {
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
             // await contractInstance.func();
         }
+        
         else {
             console.log("Please connect metamask first");
         }

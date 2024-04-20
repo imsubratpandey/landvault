@@ -58,4 +58,42 @@ contract SmartContract {
         // Emit event
         emit List(_addressOfTheLand, _priceOfLand, _areaOfTheLand, _sellersAddress, _buyersAddress);
     }
+
+    
+    //For Storing order with their purchase time
+    struct Order {
+        uint256 time;
+        Land land;
+    }
+
+
+    event Buy(address buyer, uint256 orderId, uint256 itemId);
+
+
+    mapping(address => mapping(uint256 => Order)) public trackOrders;
+    mapping(address => uint256) public countOfOrder;
+
+
+    function buy(uint256 _id) public payable {
+        // Fetch item
+        Land memory land = items[_id];
+
+        // Require enough ether to buy item
+        require(msg.value >= land.priceOfLand , "Wallet balance is not sufficient for this purchase");
+
+        // Create order
+        Order memory order = Order(block.timestamp, land);
+
+        // Add order for user
+        countOfOrder[msg.sender]++; // <-- Order ID
+        trackOrders[msg.sender][countOfOrder[msg.sender]] = order;
+
+        // Emit event
+        emit Buy(msg.sender, countOfOrder[msg.sender], land.id);
+    }
+
+    function withdrawFund() public onlyOwner {
+        (bool success, ) = owner.call{value: address(this).balance}("");
+        require(success,"Payment Fails, Try Again !!");
+    }
 }

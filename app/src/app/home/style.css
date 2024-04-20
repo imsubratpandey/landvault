@@ -32,6 +32,9 @@ h1 {
     width: 768px;
     max-width: 100%;
     min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     @media screen and (max-width: 900px) {
         width: 80vw;
@@ -101,4 +104,29 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0; /* Optional - if you want to remove the space left by the buttons */
+}
+
+.account-detail {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin-top: 10px;
+    margin-right: 15px;
+    font-size: large;
+}
+
+.navigator {
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 10px;
+    font-size: large;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    a {
+        cursor: pointer;
+        font-size: medium;
+    }
 }

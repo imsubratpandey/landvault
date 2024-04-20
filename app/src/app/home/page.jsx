@@ -4,7 +4,8 @@ import { ethers } from 'ethers';
 import './style.css';
 
 const Home = () => {
-    const [address, setAddress] = useState("sdfgh");
+    const [address, setAddress] = useState("");
+    const [displayId, setDisplayId] = useState("");
     const connectMetamask = async (e) => {
         e.preventDefault();
         try {
@@ -35,18 +36,41 @@ const Home = () => {
                 {
                     (address) ?
                         <>
-                            <div>
-                                <div></div>
-                                <div>
-                                    <form>
-                                        <h1>Create Account</h1>
-                                        <input type="number" placeholder="Enter Price" />
-                                        <input type="number" placeholder="Enter Area" />
-                                        <input type="text" placeholder="Enter Address" />
-                                        <input type="text" placeholder="Enter Blockchain Address of Buyer" />
-                                        <button onClick={(e) => { createContract(e) }}>Create Contract</button>
-                                    </form>
-                                </div>
+                            <h1 className="account-detail">Account Connected: {address.slice(0, 6) + "..." + address.slice(38, 42)}</h1>
+                            <div className="navigator">
+                                <a onClick={() => setDisplayId(0)}>Create Contract</a>
+                                <a onClick={() => setDisplayId(1)}>Pending Contract</a>
+                                <a onClick={() => setDisplayId(2)}>Recieved Contract</a>
+                            </div>
+                            <div className="contract-manager">
+                                {
+                                    (displayId === 0) ?
+                                        <>
+                                            <div className="contract-window">
+                                                <form>
+                                                    <h1>Create New Contract</h1>
+                                                    <input type="number" placeholder="Enter Price" />
+                                                    <input type="number" placeholder="Enter Area" />
+                                                    <input type="text" placeholder="Enter Address" />
+                                                    <input type="text" placeholder="Enter Blockchain Address of Buyer" />
+                                                    <button onClick={(e) => { createContract(e) }}>Create Contract</button>
+                                                </form>
+                                            </div>
+                                        </>
+                                        :
+                                        <>
+                                            {
+                                                (displayId === 1) ?
+                                                    <>
+                                                        <div></div>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <div></div>
+                                                    </>
+                                            }
+                                        </>
+                                }
                             </div>
                         </>
                         :
@@ -59,7 +83,7 @@ const Home = () => {
                             </div>
                         </>
                 }
-            </div>
+            </div >
         </>
     )
 }

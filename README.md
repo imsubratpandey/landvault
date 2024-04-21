@@ -1,6 +1,4 @@
 <h1>LandVault</h1>
-<p align="center">
-</p>
 
 <a href="https://hack36.com"> <img src="https://i.postimg.cc/RFFWF4vg/built-at-hack.jpg" height=24px> </a>
 

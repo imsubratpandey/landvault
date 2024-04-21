@@ -6,11 +6,13 @@ contract SmartContract {
     address public owner;
 
     //modifier to restrict everyone expect the owner to use a function
-    modifier onlyOwner(){
-        require(msg.sender == owner, "Only Owner is Allowed to Access this contract");
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Only Owner is Allowed to Access this contract"
+        );
         _;
     }
-
 
     constructor() {
         owner = msg.sender;
@@ -36,9 +38,14 @@ contract SmartContract {
     mapping(address => Land[]) public taskAssociatedWithABuyer;
     uint256[] public Tasks;
 
-    
     //For emitting a event if a new transaction begins
-    event List(string addressOfLand, uint256 priceOfLand, uint256 areaOfLand,address sellersAddress,address buyersAddress);
+    event List(
+        string addressOfLand,
+        uint256 priceOfLand,
+        uint256 areaOfLand,
+        address sellersAddress,
+        address buyersAddress
+    );
 
     //For listing the transactions
     function list(
@@ -57,7 +64,7 @@ contract SmartContract {
             _areaOfTheLand,
             _sellersAddress,
             _buyersAddress,
-            _sellersAddress==msg.sender,
+            _sellersAddress == msg.sender,
             false,
             false
         );
@@ -69,13 +76,20 @@ contract SmartContract {
         Tasks.push(_id);
 
         // Emit event
-        emit List(_addressOfTheLand, _priceOfLand, _areaOfTheLand, _sellersAddress, _buyersAddress);
+        emit List(
+            _addressOfTheLand,
+            _priceOfLand,
+            _areaOfTheLand,
+            _sellersAddress,
+            _buyersAddress
+        );
     }
 
     //for verifying by buyer
     function verifyByBuyer(uint256 _id) public {
         if (msg.sender == items[_id].buyersAddress)
             items[_id].isVerifiedByBuyer = true;
+        items[_id].isVerifiedByBuyer = true;
     }
 
     function verifyByGovt(uint256 _id) public onlyOwner {
@@ -85,7 +99,6 @@ contract SmartContract {
         items[_id].isVerifiedByGovt = true;
         finishedTransaction[_id] = true;
     }
-
 
     function getAllPendingTranscationFromBuyer(
         address buyerAddress
@@ -150,5 +163,4 @@ contract SmartContract {
         }
         return answer;
     }
-
 }

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import './style.css';
-const contractAddress = "0x5a816F13317F0315BE3162797B2DA03F00d114ab";
+const contractAddress = "0xa4c614ef79b770Bb253cAFB4B8a032c3B23Af935";
 import axios from 'axios';
 let contractAbi = [
     {
@@ -623,7 +623,7 @@ const Home = () => {
             await provider.send("eth_requestAccounts", []);
             const signer = await provider.getSigner();
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-            const result = await contractInstance.list(1, landAddress, price, area, address, buyerAddress, fileurl);
+            const result = await contractInstance.list(4, landAddress, price, area, address, buyerAddress, fileurl);
             console.log(result);
         }
         else {
@@ -691,124 +691,140 @@ const Home = () => {
                                             {
                                                 (displayId === 1) ?
                                                     <>
-
                                                         {
-                                                            pendingContracts.map((el, i) => {
-                                                                return (
-                                                                    <div className='pendcon' key={i}>
-                                                                        <div>
-                                                                            <table>
-                                                                                <tr>
-                                                                                    <thead>Address of Land:</thead>
-                                                                                    <td>{el[1]}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Price of Land:</thead>
-                                                                                    <td>{el[2].toString()} Rupees</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Area of Land:</thead>
-                                                                                    <td>{el[3].toString()} square meter</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Seller Address of Land:</thead>
-                                                                                    <td>{el[4]}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Buyer Address of Land:</thead>
-                                                                                    <td> {el[5]}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Documents:</thead>
-                                                                                    <td>{el[6].toString()}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Verified from Seller:</thead>
-                                                                                    <td>{el[7].toString()}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Verified from Buyer:</thead>
-                                                                                    <td>{el[8].toString()}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Verified from Government:</thead>
-                                                                                    <td>{el[9].toString()}</td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </div>
-                                                                        <button className='pend-cont-but'>
-                                                                            Waiting for Confirmation
-                                                                        </button>
-                                                                    </div>
-                                                                );
-                                                            })
+                                                            pendingContracts.length ?
+                                                                <>
+                                                                    {
+                                                                        pendingContracts.map((el, i) => {
+                                                                            return (
+                                                                                <div className='pendcon' key={i}>
+                                                                                    <div>
+                                                                                        <table>
+                                                                                            <tr>
+                                                                                                <thead>Address of Land:</thead>
+                                                                                                <td>{el[1]}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Price of Land:</thead>
+                                                                                                <td>{el[2].toString()} Rupees</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Area of Land:</thead>
+                                                                                                <td>{el[3].toString()} square meter</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Seller Address of Land:</thead>
+                                                                                                <td>{el[4]}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Buyer Address of Land:</thead>
+                                                                                                <td> {el[5]}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Documents:</thead>
+                                                                                                <td><a href={el[6].toString()} target='_blank'>Link To Document</a></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Verified from Seller:</thead>
+                                                                                                <td>{el[7].toString()}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Verified from Buyer:</thead>
+                                                                                                <td>{el[8].toString()}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Verified from Government:</thead>
+                                                                                                <td>{el[9].toString()}</td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    <button className='pend-cont-but'>
+                                                                                        Waiting for Confirmation
+                                                                                    </button>
+                                                                                </div>
+                                                                            );
+                                                                        })
+                                                                    }
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    No Contract To Show
+                                                                </>
                                                         }
-
                                                     </>
                                                     :
                                                     <>
                                                         {
-                                                            recievedContracts.map((el, i) => {
-                                                                return (
-                                                                    <div className='pendcon' key={i}>
-                                                                        <div>
-                                                                            <table>
-                                                                                <tr>
-                                                                                    <thead>Address of Land:</thead>
-                                                                                    <td>{el[1]}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Price of Land:</thead>
-                                                                                    <td>{el[2].toString()} Rupees</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Area of Land:</thead>
-                                                                                    <td>{el[3].toString()} square meter</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Seller Address of Land:</thead>
-                                                                                    <td>{el[4]}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Buyer Address of Land:</thead>
-                                                                                    <td> {el[5]}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Documents:</thead>
-                                                                                    <td>{el[6].toString()}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Verified from Seller:</thead>
-                                                                                    <td>{el[7].toString()}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Verified from Buyer:</thead>
-                                                                                    <td>{el[8].toString()}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <thead>Verified from Government:</thead>
-                                                                                    <td>{el[9].toString()}</td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </div>
-                                                                        <button className='pend-cont-but-2' onClick={async () => {
-                                                                            if (address != 0) {
-                                                                                const provider = new ethers.BrowserProvider(window.ethereum);
-                                                                                await provider.send("eth_requestAccounts", []);
-                                                                                const signer = await provider.getSigner();
-                                                                                const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-                                                                                const result = await contractInstance.verifyByBuyer(el[0]);
-                                                                                console.log(result);
-                                                                            }
-                                                                            else {
-                                                                                console.log("Please connect metamask first");
-                                                                            }
-                                                                        }}>
-                                                                            Confirm
-                                                                        </button>
-                                                                    </div>
-                                                                );
-                                                            })
+                                                            recievedContracts.length ?
+                                                                <>
+                                                                    {
+                                                                        recievedContracts.map((el, i) => {
+                                                                            return (
+                                                                                <div className='pendcon' key={i}>
+                                                                                    <div>
+                                                                                        <table>
+                                                                                            <tr>
+                                                                                                <thead>Address of Land:</thead>
+                                                                                                <td>{el[1]}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Price of Land:</thead>
+                                                                                                <td>{el[2].toString()} Rupees</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Area of Land:</thead>
+                                                                                                <td>{el[3].toString()} square meter</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Seller Address of Land:</thead>
+                                                                                                <td>{el[4]}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Buyer Address of Land:</thead>
+                                                                                                <td> {el[5]}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Documents:</thead>
+                                                                                                <td><a href={el[6].toString()} target='_blank'>Link To Document</a></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Verified from Seller:</thead>
+                                                                                                <td>{el[7].toString()}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Verified from Buyer:</thead>
+                                                                                                <td>{el[8].toString()}</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <thead>Verified from Government:</thead>
+                                                                                                <td>{el[9].toString()}</td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                    <button className='pend-cont-but-2' onClick={async () => {
+                                                                                        if (address != 0) {
+                                                                                            const provider = new ethers.BrowserProvider(window.ethereum);
+                                                                                            await provider.send("eth_requestAccounts", []);
+                                                                                            const signer = await provider.getSigner();
+                                                                                            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+                                                                                            const result = await contractInstance.verifyByBuyer(4);
+                                                                                            console.log(result);
+                                                                                        }
+                                                                                        else {
+                                                                                            console.log("Please connect metamask first");
+                                                                                        }
+                                                                                    }}>
+                                                                                        Confirm
+                                                                                    </button>
+                                                                                </div>
+                                                                            );
+                                                                        })
+                                                                    }
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    No Contract To Show
+                                                                </>
                                                         }
                                                     </>
                                             }

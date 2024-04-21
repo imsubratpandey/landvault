@@ -1,4 +1,4 @@
-<h1 align="center">Hack36 Template Readme</h1>
+<h1>LandVault</h1>
 <p align="center">
 </p>
 
@@ -8,11 +8,19 @@
 ## Introduction:
 The project aims to create a decentralized platform that facilitates secure contract negotiation and signing between buyers and sellers, with the added feature of finalizing contracts through a government authority. Built on blockchain technology and powered by Next.js, the platform ensures transparency, immutability, and security throughout the contract lifecycle.
 
+## Technologies Used and Working
+Smart Contracts - We wrote our smart contracts in Solidity. We used Hardhat to run them on a development network and finally deployed them on the Blockchain. We use these contracts to make implement logic and store data through ETH transactions.
+Frontend - We used Next.js for frontend.
+Metamask - MetaMask is a software cryptocurrency wallet used to interact with the Ethereum blockchain. We used its browser extension to access the Ethereum wallet and interact with our application.
+IPFS - IPFS or InterPlanetary File System, is a peer-to-peer distributed file system that allows users to store and access files in a decentralized manner. Instead of relying on a central server, IPFS uses a distributed network of nodes to store and share files. We used IPFS to store user’s documents so the verifier can access them later and check whether it’s authentic or not. Only the user and the verifier of the document can access the document from IPFS. 
+
 ## Demo Video Link:
+
+
   
   
 ## Presentation Link:
-  <a href="">View Presentation</a>
+  <a href="https://www.canva.com/design/DAGC_3xGmEc/x8u6LHUrDmXDrvLNfVnACA/edit">View Presentation</a>
 
   ## Table of Contents:
 

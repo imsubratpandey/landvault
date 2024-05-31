@@ -25,8 +25,8 @@ h1 {
 
 .container {
     background-color: #fff;
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    /* background-color: #c9d6ff;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff); */
     border-radius: 0px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     /* overflow: hidden; */

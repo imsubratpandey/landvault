@@ -579,6 +579,7 @@ let contractAbi = [
 ];
 
 const Home = () => {
+    const [loaderState, setLoaderState] = useState("loader-hidden");
     const [file, setFile] = useState("");
     const [address, setAddress] = useState("");
     const [landAddress, setLandAddress] = useState("");
@@ -589,14 +590,16 @@ const Home = () => {
     const [displayId, setDisplayId] = useState(0);
     const connectMetamask = async (e) => {
         e.preventDefault();
+        setLoaderState("loader-visible");
         try {
             const provider = new ethers.BrowserProvider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
             const signer = await provider.getSigner();
             setAddress(await signer.getAddress());
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
+        setLoaderState("loader-hidden");
     }
     const handleSubmit = async () => {
         const fileData = new FormData();
@@ -660,11 +663,14 @@ const Home = () => {
     }
     return (
         <>
+            <div className={loaderState}>
+                <svg width="50" height="50" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="12" r="3"><animate id="spinner_qFRN" begin="0;spinner_OcgL.end+0.25s" attributeName="cy" calcMode="spline" dur="0.6s" values="12;6;12" keySplines=".33,.66,.66,1;.33,0,.66,.33" /></circle><circle cx="12" cy="12" r="3"><animate begin="spinner_qFRN.begin+0.1s" attributeName="cy" calcMode="spline" dur="0.6s" values="12;6;12" keySplines=".33,.66,.66,1;.33,0,.66,.33" /></circle><circle cx="20" cy="12" r="3"><animate id="spinner_OcgL" begin="spinner_qFRN.begin+0.2s" attributeName="cy" calcMode="spline" dur="0.6s" values="12;6;12" keySplines=".33,.66,.66,1;.33,0,.66,.33" /></circle></svg>
+            </div>
             <div className="container" id="container">
                 {
                     (address) ?
                         <>
-                            <h1 className="account-detail">Account Connected: {address}</h1>
+                            <h1 className="account-detail" onClick={() => { navigator.clipboard.writeText(address); }}>Account Connected: {address.slice(0, 6) + '...' + address.slice(38, 42)}</h1>
                             <div className="navigator">
                                 <a className='navigator-items' onClick={() => setDisplayId(0)}>Create Contract</a>
                                 <a className='navigator-items' onClick={async () => { await getPendingContract(); setDisplayId(1); }}>Pending Contract</a>
@@ -836,7 +842,7 @@ const Home = () => {
                         <>
                             <div className="form-container sign-in">
                                 <form>
-                                    <h1>Sign In</h1>
+                                    <h1>LandValut</h1>
                                     <button onClick={(e) => connectMetamask(e)}>Login with Metamask</button>
                                 </form>
                             </div>

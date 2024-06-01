@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.0;
 
 contract SmartContract {
     //For storing the owner of the contract
@@ -7,10 +7,7 @@ contract SmartContract {
 
     //modifier to restrict everyone expect the owner to use a function
     modifier onlyOwner() {
-        require(
-            msg.sender == owner,
-            "Only Owner is Allowed to Access this contract"
-        );
+        require(msg.sender == owner);
         _;
     }
 
@@ -24,143 +21,148 @@ contract SmartContract {
         string addressOfTheLand;
         uint256 priceOfLand;
         uint256 areaOfTheLand;
-        address sellersAddress;
-        address buyersAddress;
-        bool isVerifiedBySeller;
+        address sellerAddress;
+        address buyerAddress;
         bool isVerifiedByBuyer;
         bool isVerifiedByGovt;
     }
 
     //For storing the transactions
-    mapping(uint256 => Land) public items;
-    mapping(uint256 => bool) public finishedTransaction;
-    mapping(address => Land[]) public taskAssociatedWithASeller;
-    mapping(address => Land[]) public taskAssociatedWithABuyer;
-    uint256[] public Tasks;
-
-    //For emitting a event if a new transaction begins
-    event List(
-        string addressOfLand,
-        uint256 priceOfLand,
-        uint256 areaOfLand,
-        address sellersAddress,
-        address buyersAddress
-    );
+    Land[] public lands;
 
     //For listing the transactions
     function list(
-        uint256 _id,
         string memory _addressOfTheLand,
         uint256 _priceOfLand,
         uint256 _areaOfTheLand,
-        address _sellersAddress,
-        address _buyersAddress
+        address _buyerAddress
     ) public {
+        address _sellerAddress = msg.sender;
         // Create Item
         Land memory land = Land(
-            _id,
+            lands.length,
             _addressOfTheLand,
             _priceOfLand,
             _areaOfTheLand,
-            _sellersAddress,
-            _buyersAddress,
-            _sellersAddress == msg.sender,
+            _sellerAddress,
+            _buyerAddress,
             false,
             false
         );
 
-        // Add Item to mapping
-        items[_id] = land;
-        taskAssociatedWithASeller[_sellersAddress].push(items[_id]);
-        taskAssociatedWithABuyer[_buyersAddress].push(items[_id]);
-        Tasks.push(_id);
-
-        // Emit event
-        emit List(
-            _addressOfTheLand,
-            _priceOfLand,
-            _areaOfTheLand,
-            _sellersAddress,
-            _buyersAddress
-        );
+        lands.push(land);
     }
 
-    //for verifying by buyer
+    //For getting pending transactions
+    function getAllPendingTransaction() public view returns (Land[] memory) {
+        uint count = 0;
+        for(uint i = 0; i < lands.length; i++) {
+            if((lands[i].isVerifiedByBuyer == false || lands[i].isVerifiedByGovt == false) && (lands[i].sellerAddress == msg.sender || lands[i].buyerAddress == msg.sender)) {
+                count++;
+            }
+        }
+        uint index = 0;
+        Land[] memory answer = new Land[](count);
+        for(uint i = 0; i < lands.length; i++) {
+            if((lands[i].isVerifiedByBuyer == false || lands[i].isVerifiedByGovt == false) && (lands[i].sellerAddress == msg.sender || lands[i].buyerAddress == msg.sender)) {
+                answer[index] = lands[i];
+                index++;
+            }
+        }
+        return answer;
+    }
+
+    //For getting received transactions
+    function getAllReceivedTransaction() public view returns (Land[] memory) {
+        uint count = 0;
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByBuyer == false && lands[i].buyerAddress == msg.sender) {
+                count++;
+            }
+        }
+        uint index = 0;
+        Land[] memory answer = new Land[](count);
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByBuyer == false && lands[i].buyerAddress == msg.sender) {
+                answer[index] = lands[i];
+                index++;
+            }
+        }
+        return answer;
+    }
+
+    //For getting all completed transactions
+    function getCompletedTransaction() public view returns (Land[] memory) {
+        uint count = 0;
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByGovt == true && (lands[i].sellerAddress == msg.sender || lands[i].buyerAddress == msg.sender)) {
+                count++;
+            }
+        }
+        uint index = 0;
+        Land[] memory answer = new Land[](count);
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByGovt == true && (lands[i].sellerAddress == msg.sender || lands[i].buyerAddress == msg.sender)) {
+                answer[index] = lands[i];
+                index++;
+            }
+        }
+        return answer;
+    }
+
+    //For getting all received transactions for admin
+    function getAllReceivedTransactionAdmin() public onlyOwner view returns (Land[] memory) {
+        uint count = 0;
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByBuyer == true && lands[i].isVerifiedByGovt == false) {
+                count++;
+            }
+        }
+        uint index = 0;
+        Land[] memory answer = new Land[](count);
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByBuyer == true && lands[i].isVerifiedByGovt == false) {
+                answer[index] = lands[i];
+                index++;
+            }
+        }
+        return answer;
+    }
+
+    //For getting all completed transactions for admin
+    function getAllCompletedTransactionAdmin() public onlyOwner view returns (Land[] memory) {
+        uint count = 0;
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByGovt == true) {
+                count++;
+            }
+        }
+        uint index = 0;
+        Land[] memory answer = new Land[](count);
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].isVerifiedByGovt == true) {
+                answer[index] = lands[i];
+                index++;
+            }
+        }
+        return answer;
+    }
+
+    //For verification from buyer
     function verifyByBuyer(uint256 _id) public {
-        if (msg.sender == items[_id].buyersAddress)
-            items[_id].isVerifiedByBuyer = true;
-        items[_id].isVerifiedByBuyer = true;
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].id == _id && lands[i].buyerAddress == msg.sender) {
+                lands[i].isVerifiedByBuyer = true;
+            }
+        }
     }
 
+    //For verification from government
     function verifyByGovt(uint256 _id) public onlyOwner {
-        require(items[_id].isVerifiedByBuyer == true);
-        require(items[_id].isVerifiedBySeller == true);
-
-        items[_id].isVerifiedByGovt = true;
-        finishedTransaction[_id] = true;
-    }
-
-    function getAllPendingTranscationFromBuyer(
-        address buyerAddress
-    ) public view returns (Land[] memory) {
-        Land[] memory lands = taskAssociatedWithABuyer[buyerAddress];
-        uint count = 0;
-        for (uint i = 0; i < lands.length; i++) {
-            if (!finishedTransaction[lands[i].id]) {
-                count++;
+        for(uint i = 0; i < lands.length; i++) {
+            if(lands[i].id == _id && lands[i].isVerifiedByBuyer == true) {
+                lands[i].isVerifiedByGovt = true;
             }
         }
-        Land[] memory answer = new Land[](count);
-        uint index = 0;
-        for (uint i = 0; i < lands.length; i++) {
-            if (!finishedTransaction[lands[i].id]) {
-                answer[index] = lands[i];
-                index++;
-            }
-        }
-        return answer;
-    }
-
-    function getAllPendingTranscationFromSeller(
-        address sellerAddress
-    ) public view returns (Land[] memory) {
-        Land[] memory lands = taskAssociatedWithASeller[sellerAddress];
-        uint count = 0;
-        for (uint i = 0; i < lands.length; i++) {
-            if (!finishedTransaction[lands[i].id]) {
-                count++;
-            }
-        }
-        Land[] memory answer = new Land[](count);
-        uint index = 0;
-        for (uint i = 0; i < lands.length; i++) {
-            if (!finishedTransaction[lands[i].id]) {
-                answer[index] = lands[i];
-                index++;
-            }
-        }
-        return answer;
-    }
-
-    function getAllPendingTranscationFromGovt()
-        public
-        view
-        returns (Land[] memory)
-    {
-        uint count = 0;
-        for (uint i = 0; i < Tasks.length; i++) {
-            if (!finishedTransaction[Tasks[i]]) {
-                count++;
-            }
-        }
-        Land[] memory answer = new Land[](count);
-        uint index = 0;
-        for (uint i = 0; i < Tasks.length; i++) {
-            if (!finishedTransaction[Tasks[i]]) {
-                answer[index] = items[Tasks[i]];
-                index++;
-            }
-        }
-        return answer;
     }
 }

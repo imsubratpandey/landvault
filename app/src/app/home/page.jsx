@@ -2,581 +2,412 @@
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import './style.css';
-const contractAddress = "0xa4c614ef79b770Bb253cAFB4B8a032c3B23Af935";
+const contractAddress = "0x31Ce644c15a6463CB8DF3350EbFa87f218b1bDe0";
 import axios from 'axios';
 let contractAbi = [
     {
-        "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
     },
     {
-        "anonymous": false,
-        "inputs": [
+      "inputs": [],
+      "name": "getAllCompletedTransactionAdmin",
+      "outputs": [
+        {
+          "components": [
             {
-                "indexed": false,
-                "internalType": "string",
-                "name": "addressOfLand",
-                "type": "string"
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "priceOfLand",
-                "type": "uint256"
+              "internalType": "string",
+              "name": "addressOfTheLand",
+              "type": "string"
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "areaOfLand",
-                "type": "uint256"
+              "internalType": "uint256",
+              "name": "priceOfLand",
+              "type": "uint256"
             },
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "sellersAddress",
-                "type": "address"
+              "internalType": "uint256",
+              "name": "areaOfTheLand",
+              "type": "uint256"
             },
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "buyersAddress",
-                "type": "address"
+              "internalType": "address",
+              "name": "sellerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "buyerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByBuyer",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByGovt",
+              "type": "bool"
             }
-        ],
-        "name": "List",
-        "type": "event"
+          ],
+          "internalType": "struct SmartContract.Land[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
+      "inputs": [],
+      "name": "getAllPendingTransaction",
+      "outputs": [
+        {
+          "components": [
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "Tasks",
-        "outputs": [
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+              "internalType": "string",
+              "name": "addressOfTheLand",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "priceOfLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "areaOfTheLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sellerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "buyerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByBuyer",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByGovt",
+              "type": "bool"
             }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+          ],
+          "internalType": "struct SmartContract.Land[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
+      "inputs": [],
+      "name": "getAllPendingTransactionAdmin",
+      "outputs": [
+        {
+          "components": [
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "finishedTransaction",
-        "outputs": [
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
+              "internalType": "string",
+              "name": "addressOfTheLand",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "priceOfLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "areaOfTheLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sellerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "buyerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByBuyer",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByGovt",
+              "type": "bool"
             }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+          ],
+          "internalType": "struct SmartContract.Land[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
+      "inputs": [],
+      "name": "getAllReceivedTransaction",
+      "outputs": [
+        {
+          "components": [
             {
-                "internalType": "address",
-                "name": "buyerAddress",
-                "type": "address"
-            }
-        ],
-        "name": "getAllPendingTranscationFromBuyer",
-        "outputs": [
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
             {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "addressOfTheLand",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "priceOfLand",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "areaOfTheLand",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sellersAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "buyersAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "landImage",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedBySeller",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedByBuyer",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedByGovt",
-                        "type": "bool"
-                    }
-                ],
-                "internalType": "struct SmartContract.Land[]",
-                "name": "",
-                "type": "tuple[]"
+              "internalType": "string",
+              "name": "addressOfTheLand",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "priceOfLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "areaOfTheLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sellerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "buyerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByBuyer",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByGovt",
+              "type": "bool"
             }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+          ],
+          "internalType": "struct SmartContract.Land[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [],
-        "name": "getAllPendingTranscationFromGovt",
-        "outputs": [
+      "inputs": [],
+      "name": "getCompletedTransaction",
+      "outputs": [
+        {
+          "components": [
             {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "addressOfTheLand",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "priceOfLand",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "areaOfTheLand",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sellersAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "buyersAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "landImage",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedBySeller",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedByBuyer",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedByGovt",
-                        "type": "bool"
-                    }
-                ],
-                "internalType": "struct SmartContract.Land[]",
-                "name": "",
-                "type": "tuple[]"
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "addressOfTheLand",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "priceOfLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "areaOfTheLand",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sellerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "buyerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByBuyer",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isVerifiedByGovt",
+              "type": "bool"
             }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+          ],
+          "internalType": "struct SmartContract.Land[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "sellerAddress",
-                "type": "address"
-            }
-        ],
-        "name": "getAllPendingTranscationFromSeller",
-        "outputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "addressOfTheLand",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "priceOfLand",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "areaOfTheLand",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sellersAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "buyersAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "landImage",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedBySeller",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedByBuyer",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isVerifiedByGovt",
-                        "type": "bool"
-                    }
-                ],
-                "internalType": "struct SmartContract.Land[]",
-                "name": "",
-                "type": "tuple[]"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "lands",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "addressOfTheLand",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "priceOfLand",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "areaOfTheLand",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sellerAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "buyerAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "isVerifiedByBuyer",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "isVerifiedByGovt",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "items",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "addressOfTheLand",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "priceOfLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "areaOfTheLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "sellersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "buyersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "string",
-                "name": "landImage",
-                "type": "string"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedBySeller",
-                "type": "bool"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedByBuyer",
-                "type": "bool"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedByGovt",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_addressOfTheLand",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_priceOfLand",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_areaOfTheLand",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_buyerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "list",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "_addressOfTheLand",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_priceOfLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_areaOfTheLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_sellersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "_buyersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "string",
-                "name": "_landImage",
-                "type": "string"
-            }
-        ],
-        "name": "list",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "verifyByBuyer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "taskAssociatedWithABuyer",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "addressOfTheLand",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "priceOfLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "areaOfTheLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "sellersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "buyersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "string",
-                "name": "landImage",
-                "type": "string"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedBySeller",
-                "type": "bool"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedByBuyer",
-                "type": "bool"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedByGovt",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "taskAssociatedWithASeller",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "addressOfTheLand",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "priceOfLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "areaOfTheLand",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "sellersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "buyersAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "string",
-                "name": "landImage",
-                "type": "string"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedBySeller",
-                "type": "bool"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedByBuyer",
-                "type": "bool"
-            },
-            {
-                "internalType": "bool",
-                "name": "isVerifiedByGovt",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            }
-        ],
-        "name": "verifyByBuyer",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            }
-        ],
-        "name": "verifyByGovt",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "verifyByGovt",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
-];
+  ];
+
 
 const Home = () => {
     const [loaderState, setLoaderState] = useState("loader-hidden");
@@ -620,13 +451,13 @@ const Home = () => {
     const createContract = async (e) => {
         e.preventDefault();
         if (address != 0) {
-            var fileurl = await handleSubmit();
-            console.log(fileurl);
+            //var fileurl = await handleSubmit();
+            //console.log(fileurl);
             const provider = new ethers.BrowserProvider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
             const signer = await provider.getSigner();
             const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-            const result = await contractInstance.list(4, landAddress, price, area, address, buyerAddress, fileurl);
+            const result = await contractInstance.list("ngpr", 1, 1, "0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db");
             console.log(result);
         }
         else {
@@ -655,17 +486,18 @@ const Home = () => {
     }]);
     const getPendingContract = async () => {
         console.log("pc running");
-        // if (address != 0) {
-        //     const provider = new ethers.BrowserProvider(window.ethereum);
-        //     await provider.send("eth_requestAccounts", []);
-        //     const signer = await provider.getSigner();
-        //     const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-        //     const result = await contractInstance.getAllPendingTranscationFromSeller(address);
-        //     setPendingContracts(result);
-        // }
-        // else {
-        //     console.log("Please connect metamask first");
-        // }
+        if (address != 0) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = await provider.getSigner();
+            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+            const result = await contractInstance.getAllPendingTransaction();
+            console.log(result);
+            //setPendingContracts(result);
+        }
+        else {
+            console.log("Please connect metamask first");
+        }
     }
     const [recievedContracts, setRecievedContracts] = useState([{
         "id": 0,
@@ -689,17 +521,18 @@ const Home = () => {
     }]);
     const getRecievedContract = async () => {
         console.log("rc running");
-        // if (address != 0) {
-        //     const provider = new ethers.BrowserProvider(window.ethereum);
-        //     await provider.send("eth_requestAccounts", []);
-        //     const signer = await provider.getSigner();
-        //     const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-        //     const result = await contractInstance.getAllPendingTranscationFromBuyer(address);
-        //     setRecievedContracts(result);
-        // }
-        // else {
-        //     console.log("Please connect metamask first");
-        // }
+        if (address != 0) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = await provider.getSigner();
+            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+            const result = await contractInstance.getAllReceivedTransaction();
+            console.log(result);
+            //setRecievedContracts(result);
+        }
+        else {
+            console.log("Please connect metamask first");
+        }
     }
     const [historyContracts, setHistoryContracts] = useState([{
         "id": 0,
@@ -723,17 +556,32 @@ const Home = () => {
     }]);
     const getHistoryContract = async () => {
         console.log("hc running");
-        // if (address != 0) {
-        //     const provider = new ethers.BrowserProvider(window.ethereum);
-        //     await provider.send("eth_requestAccounts", []);
-        //     const signer = await provider.getSigner();
-        //     const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-        //     const result = await contractInstance.getAllPendingTranscationFromBuyer(address);
-        //     setRecievedContracts(result);
-        // }
-        // else {
-        //     console.log("Please connect metamask first");
-        // }
+        if (address != 0) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = await provider.getSigner();
+            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+            const result = await contractInstance.getCompletedTransaction();
+            console.log(result);
+            //setHistoryContracts(result);
+        }
+        else {
+            console.log("Please connect metamask first");
+        }
+    }
+    const verifyByBuyer = async (id) => {
+        console.log("vfb running");
+        if (address != 0) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = await provider.getSigner();
+            const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+            const result = await contractInstance.verifyByBuyer(id);
+            console.log(result);
+        }
+        else {
+            console.log("Please connect metamask first");
+        }
     }
     return (
         <>
@@ -759,7 +607,7 @@ const Home = () => {
                                                     <input type="number" value={area} onChange={(e) => setArea(e.target.value)} placeholder="Enter Area in sq. meter" />
                                                     <input type="text" value={landAddress} onChange={(e) => setLandAddress(e.target.value)} placeholder="Enter Address" />
                                                     <input type="text" value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} placeholder="Enter Blockchain Address of Buyer" />
-                                                    <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+                                                    <input id="file-input" type="file" onChange={(e) => setFile(e.target.files[0])} />
                                                     <button onClick={(e) => { createContract(e) }}>Create Contract</button>
                                                 </form>
                                             </div>
@@ -824,7 +672,7 @@ const Home = () => {
                                                                                                         <div className="contract-ipfs">IPFS Documents ↪</div>
                                                                                                         <div className="contract-v">Verified By Seller ✓</div>
                                                                                                     </div>
-                                                                                                    <div className="accept-button">Accept this Contract ✓</div>
+                                                                                                    <div className="accept-button" onClick={() => { verifyByBuyer(el.id); }}>Accept this Contract ✓</div>
                                                                                                 </div>
                                                                                             </div>
                                                                                         );

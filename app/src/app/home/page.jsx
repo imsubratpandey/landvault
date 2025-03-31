@@ -410,6 +410,7 @@ let contractAbi = [
 
 
 const Home = () => {
+  const [file, setFile] = useState(null);
   const [loaderState, setLoaderState] = useState("loader-hidden");
   const [address, setAddress] = useState('');
   const [landAddress, setLandAddress] = useState('');
@@ -430,6 +431,24 @@ const Home = () => {
     }
     setLoaderState("loader-hidden");
   }
+  const uploadToPinata = async () => {
+    if (!file) {
+      setError("Please select a file to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post("/api/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return response.data.path;
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const createContract = async (e) => {
     e.preventDefault();
     setLoaderState("loader-visible");
@@ -438,7 +457,8 @@ const Home = () => {
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-      const result = await contractInstance.list(landAddress, price, area, buyerAddress).then((tx) => {
+      const ipfsLink = `https://gateway.pinata.cloud/ipfs/${await uploadToPinata()}`;
+      await contractInstance.list(landAddress, price, area, ipfsLink, buyerAddress).then((tx) => {
         tx.wait().then(() => {
           setLoaderState("loader-hidden")
           console.log("Transfer Successful!")
@@ -558,7 +578,7 @@ const Home = () => {
                           <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Enter Price in Rupees" />
                           <input type="number" value={area} onChange={(e) => setArea(e.target.value)} placeholder="Enter Area in Square. Meter" />
                           <input type="text" value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} placeholder="Enter Blockchain Address of Buyer" />
-                          {/* <input id="file-input" type="file" onChange={(e) => setFile(e.target.files[0])} /> */}
+                          <input id="file-input" type="file" onChange={(e) => setFile(e.target.files[0])} />
                           <button onClick={(e) => { createContract(e) }}>Create Contract</button>
                         </form>
                       </div>

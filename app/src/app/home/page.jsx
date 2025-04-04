@@ -412,7 +412,7 @@ let contractAbi = [
 const Home = () => {
   const [file, setFile] = useState(null);
   const [loaderState, setLoaderState] = useState("loader-hidden");
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState('subrat');
   const [landAddress, setLandAddress] = useState('');
   const [price, setPrice] = useState('');
   const [area, setArea] = useState('');
@@ -578,7 +578,8 @@ const Home = () => {
                           <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Enter Price in Rupees" />
                           <input type="number" value={area} onChange={(e) => setArea(e.target.value)} placeholder="Enter Area in Square. Meter" />
                           <input type="text" value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} placeholder="Enter Blockchain Address of Buyer" />
-                          <input id="file-input" type="file" onChange={(e) => setFile(e.target.files[0])} />
+                          <input id="file-input" type="file" onChange={(e) => setFile(e.target.files[0]) } />
+                          <label htmlFor="file-input" className="custom-file-upload">{(file?.name) ? file.name : "Select Files to Upload"}</label>
                           <button onClick={(e) => { createContract(e) }}>Create Contract</button>
                         </form>
                       </div>

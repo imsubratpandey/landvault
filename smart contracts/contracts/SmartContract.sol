@@ -21,6 +21,7 @@ contract SmartContract {
         string addressOfTheLand;
         uint256 priceOfLand;
         uint256 areaOfTheLand;
+        string ipfsLink;
         address sellerAddress;
         address buyerAddress;
         bool isVerifiedByBuyer;
@@ -35,6 +36,7 @@ contract SmartContract {
         string memory _addressOfTheLand,
         uint256 _priceOfLand,
         uint256 _areaOfTheLand,
+        string memory _ipfsLink,
         address _buyerAddress
     ) public {
         address _sellerAddress = msg.sender;
@@ -44,6 +46,7 @@ contract SmartContract {
             _addressOfTheLand,
             _priceOfLand,
             _areaOfTheLand,
+            _ipfsLink,
             _sellerAddress,
             _buyerAddress,
             false,

@@ -1,423 +1,25 @@
-'use client';
+"use client";
 import { useState } from "react";
 import { ethers } from "ethers";
 import "./style.css";
-const contractAddress = "0x1fE6866C1a562030419d7d3A8FDfF93Bb02E5Ca0";
 import axios from "axios";
-let contractAbi = [
-  {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "getAllCompletedTransactionAdmin",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "addressOfTheLand",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "priceOfLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "areaOfTheLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sellerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "buyerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByBuyer",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByGovt",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SmartContract.Land[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getAllPendingTransaction",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "addressOfTheLand",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "priceOfLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "areaOfTheLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sellerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "buyerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByBuyer",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByGovt",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SmartContract.Land[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getAllReceivedTransaction",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "addressOfTheLand",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "priceOfLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "areaOfTheLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sellerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "buyerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByBuyer",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByGovt",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SmartContract.Land[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getAllReceivedTransactionAdmin",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "addressOfTheLand",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "priceOfLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "areaOfTheLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sellerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "buyerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByBuyer",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByGovt",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SmartContract.Land[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getCompletedTransaction",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "addressOfTheLand",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "priceOfLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "areaOfTheLand",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "sellerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "buyerAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByBuyer",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "isVerifiedByGovt",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct SmartContract.Land[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "lands",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "addressOfTheLand",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "priceOfLand",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "areaOfTheLand",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "sellerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "buyerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "isVerifiedByBuyer",
-        "type": "bool"
-      },
-      {
-        "internalType": "bool",
-        "name": "isVerifiedByGovt",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_addressOfTheLand",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_priceOfLand",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_areaOfTheLand",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_buyerAddress",
-        "type": "address"
-      }
-    ],
-    "name": "list",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "verifyByBuyer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "verifyByGovt",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
-];
-
+const contractAbi = process.env.NEXT_PUBLIC_CONTRACT_ABI;
+const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
 const Home = () => {
   const [file, setFile] = useState(null);
   const [loaderState, setLoaderState] = useState("loader-hidden");
-  const [address, setAddress] = useState('subrat');
-  const [landAddress, setLandAddress] = useState('');
-  const [price, setPrice] = useState('');
-  const [area, setArea] = useState('');
+  const [errorState, setErrorState] = useState(false);
+  const [message, setMessage] = useState("");
+  const [address, setAddress] = useState("");
+  const [landAddress, setLandAddress] = useState("");
+  const [price, setPrice] = useState("");
+  const [area, setArea] = useState("");
   const [buyerAddress, setBuyerAddress] = useState("");
   const [displayId, setDisplayId] = useState(0);
+  const [pendingContracts, setPendingContracts] = useState([]);
+  const [recievedContracts, setRecievedContracts] = useState([]);
+  const [historyContracts, setHistoryContracts] = useState([]);
   const connectMetamask = async (e) => {
     e.preventDefault();
     setLoaderState("loader-visible");
@@ -427,26 +29,25 @@ const Home = () => {
       const signer = await provider.getSigner();
       setAddress(await signer.getAddress());
     } catch (err) {
+      setErrorState(true);
       console.log(err);
     }
     setLoaderState("loader-hidden");
   }
   const uploadToPinata = async () => {
-    if (!file) {
-      setError("Please select a file to upload.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await axios.post("/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return response.data.path;
-    } catch (error) {
-      console.error(error);
+    setMessage("Uploading file to IPFS");
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        const response = await axios.post("/api/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        return response.data.path;
+      } catch (error) {
+        setErrorState(true);
+        console.error(error);
+      }
     }
   };
   const createContract = async (e) => {
@@ -457,26 +58,25 @@ const Home = () => {
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-      const ipfsLink = `https://gateway.pinata.cloud/ipfs/${await uploadToPinata()}`;
+      const ipfsLink = (file) ? `https://gateway.pinata.cloud/ipfs/${await uploadToPinata()}` : ``;
+      setMessage("Creating Contract");
       await contractInstance.list(landAddress, price, area, ipfsLink, buyerAddress).then((tx) => {
         tx.wait().then(() => {
-          setLoaderState("loader-hidden")
-          console.log("Transfer Successful!")
-        }).catch((err) => {
-          setLoaderState("loader-hidden")
-          console.log("handleClick Error: ", err)
-          console.log("Transfer Failed!")
+          console.log("Transfer Successful!");
+        }).catch((error) => {
+          setErrorState(true);
+          console.error(error);
         })
       });
     }
     else {
-      console.log("Please connect metamask first");
+      setErrorState(true);
     }
-    // setLoaderState("loader-hidden");
+    displayId(1);
+    setLoaderState("loader-hidden");
+    setMessage("");
   }
-  const [pendingContracts, setPendingContracts] = useState([]);
   const getPendingContract = async () => {
-    console.log("pc running");
     setLoaderState("loader-visible");
     if (address != 0) {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -484,17 +84,15 @@ const Home = () => {
       const signer = await provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
       const result = await contractInstance.getAllPendingTransaction();
-      console.log(result);
       setPendingContracts(result);
     }
     else {
-      console.log("Please connect metamask first");
+      setErrorState(true);
+      console.error(error);
     }
     setLoaderState("loader-hidden");
   }
-  const [recievedContracts, setRecievedContracts] = useState([]);
   const getRecievedContract = async () => {
-    console.log("rc running");
     setLoaderState("loader-visible");
     if (address != 0) {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -502,17 +100,15 @@ const Home = () => {
       const signer = await provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
       const result = await contractInstance.getAllReceivedTransaction();
-      console.log(result);
       setRecievedContracts(result);
     }
     else {
-      console.log("Please connect metamask first");
+      setErrorState(true);
+      console.error(error);
     }
     setLoaderState("loader-hidden");
   }
-  const [historyContracts, setHistoryContracts] = useState([]);
   const getHistoryContract = async () => {
-    console.log("hc running");
     setLoaderState("loader-visible");
     if (address != 0) {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -520,44 +116,52 @@ const Home = () => {
       const signer = await provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
       const result = await contractInstance.getCompletedTransaction();
-      console.log(result);
       setHistoryContracts(result);
     }
     else {
-      console.log("Please connect metamask first");
+      setErrorState(true);
+      console.error(error);
     }
     setLoaderState("loader-hidden");
   }
   const verifyByBuyer = async (id) => {
-    console.log("vfb running");
     setLoaderState("loader-visible");
     if (address != 0) {
       const provider = new ethers.BrowserProvider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-      const result = await contractInstance.verifyByBuyer(id).then((tx) => {
+      await contractInstance.verifyByBuyer(id).then((tx) => {
         tx.wait().then(async () => {
           await getRecievedContract();
-          setLoaderState("loader-hidden")
-          console.log("Transfer Successful!")
-        }).catch((err) => {
-          setLoaderState("loader-hidden")
-          console.log("handleClick Error: ", err)
-          console.log("Transfer Failed!")
+          console.log("Transfer Successful!");
+        }).catch((error) => {
+          setErrorState(true);
+          console.error(error);
         })
       });
-      //console.log(result);
     }
     else {
-      console.log("Please connect metamask first");
+      setErrorState(true);
+      console.error(error);
     }
-    //setLoaderState("loader-hidden");
+    setLoaderState("loader-hidden");
   }
   return (
     <>
+      {
+        (errorState) ?
+          <div className="error-message">
+            <h1>Something went wrong</h1>
+            <button className="error-button" onClick={() => window.location.reload()}>Reload</button>
+          </div>
+          :
+          <>
+          </>
+      }
       <div className={loaderState}>
         <svg width="50" height="50" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="12" r="3"><animate id="spinner_qFRN" begin="0;spinner_OcgL.end+0.25s" attributeName="cy" calcMode="spline" dur="0.6s" values="12;6;12" keySplines=".33,.66,.66,1;.33,0,.66,.33" /></circle><circle cx="12" cy="12" r="3"><animate begin="spinner_qFRN.begin+0.1s" attributeName="cy" calcMode="spline" dur="0.6s" values="12;6;12" keySplines=".33,.66,.66,1;.33,0,.66,.33" /></circle><circle cx="20" cy="12" r="3"><animate id="spinner_OcgL" begin="spinner_qFRN.begin+0.2s" attributeName="cy" calcMode="spline" dur="0.6s" values="12;6;12" keySplines=".33,.66,.66,1;.33,0,.66,.33" /></circle></svg>
+        <h1>{message}</h1>
       </div>
       <div className="container" id="container">
         {
@@ -565,7 +169,7 @@ const Home = () => {
             <>
               <div className="top-bar">
                 <h1 className="main-title">LandValut</h1>
-                <h3 className="account-detail" onClick={() => { navigator.clipboard.writeText(address); }}>Account Connected: {address.slice(0, 6) + '...' + address.slice(38, 42)}</h3>
+                <h3 className="account-detail" onClick={() => { navigator.clipboard.writeText(address); }}>Account Connected: {address.slice(0, 6) + "..." + address.slice(38, 42)}</h3>
               </div>
               <div className="contract-manager">
                 {
@@ -578,7 +182,7 @@ const Home = () => {
                           <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Enter Price in Rupees" />
                           <input type="number" value={area} onChange={(e) => setArea(e.target.value)} placeholder="Enter Area in Square. Meter" />
                           <input type="text" value={buyerAddress} onChange={(e) => setBuyerAddress(e.target.value)} placeholder="Enter Blockchain Address of Buyer" />
-                          <input id="file-input" type="file" onChange={(e) => setFile(e.target.files[0]) } />
+                          <input id="file-input" type="file" onChange={(e) => setFile(e.target.files[0])} />
                           <label htmlFor="file-input" className="custom-file-upload">{(file?.name) ? file.name : "Select Files to Upload"}</label>
                           <button onClick={(e) => { createContract(e) }}>Create Contract</button>
                         </form>
@@ -597,7 +201,7 @@ const Home = () => {
                                       return (
                                         <div className="pendcon" key={i}>
                                           <div className="contract-info">
-                                            <h2>{el.sellerAddress.slice(0, 6) + '...' + el.sellerAddress.slice(38, 42)} → {el.buyerAddress.slice(0, 6) + '...' + el.buyerAddress.slice(38, 42)}</h2>
+                                            <h2>{el.sellerAddress.slice(0, 6) + "..." + el.sellerAddress.slice(38, 42)} → {el.buyerAddress.slice(0, 6) + "..." + el.buyerAddress.slice(38, 42)}</h2>
                                             <h2>GLOBAL CONTRACT ID : {el.id.toString()}</h2>
                                           </div>
                                           <div className="contract-details">
@@ -633,7 +237,7 @@ const Home = () => {
                                             return (
                                               <div className="pendcon" key={i}>
                                                 <div className="contract-info">
-                                                  <h2>{el.sellerAddress.slice(0, 6) + '...' + el.sellerAddress.slice(38, 42)} → {el.buyerAddress.slice(0, 6) + '...' + el.buyerAddress.slice(38, 42)}</h2>
+                                                  <h2>{el.sellerAddress.slice(0, 6) + "..." + el.sellerAddress.slice(38, 42)} → {el.buyerAddress.slice(0, 6) + "..." + el.buyerAddress.slice(38, 42)}</h2>
                                                   <h2>GLOBAL CONTRACT ID : {el.id.toString()}</h2>
                                                 </div>
                                                 <div className="contract-details-cover">
@@ -641,7 +245,7 @@ const Home = () => {
                                                     <div className="contract-address"> 𖡡 {el.addressOfTheLand}</div>
                                                     <div className="contract-price"> ₹ {el.priceOfLand.toString()}</div>
                                                     <div className="contract-area">{el.areaOfTheLand.toString()} m<sup>2</sup></div>
-                                                    <div className="contract-ipfs">IPFS Documents ↪</div>
+                                                    <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
                                                     <div className="contract-v">Verified By Seller ✓</div>
                                                   </div>
                                                   <div className="accept-button" onClick={() => { verifyByBuyer(el.id.toString()); }}>Accept this Contract ✓</div>
@@ -667,7 +271,7 @@ const Home = () => {
                                             return (
                                               <div className="pendcon" key={i}>
                                                 <div className="contract-info">
-                                                  <h2>{el.sellerAddress.slice(0, 6) + '...' + el.sellerAddress.slice(38, 42)} → {el.buyerAddress.slice(0, 6) + '...' + el.buyerAddress.slice(38, 42)}</h2>
+                                                  <h2>{el.sellerAddress.slice(0, 6) + "..." + el.sellerAddress.slice(38, 42)} → {el.buyerAddress.slice(0, 6) + "..." + el.buyerAddress.slice(38, 42)}</h2>
                                                   <h2>GLOBAL CONTRACT ID : {el.id.toString()}</h2>
                                                 </div>
                                                 <div className="contract-details">

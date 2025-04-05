@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
+    console.log(process.env.PINATA_API_KEY);
+    console.log(process.env.PINATA_SECRET_API_KEY);
     const formData = await req.formData();
     console.log(formData);
     const response = await axios.post(

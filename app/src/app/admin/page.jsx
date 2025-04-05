@@ -2,12 +2,13 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 import "./style.css";
-const contractAbi = process.env.NEXT_PUBLIC_CONTRACT_ABI;
+import SmartContractJSON from "../../../../smart contracts/artifacts/contracts/SmartContract.sol/SmartContract.json";
+const contractAbi = SmartContractJSON.abi;
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
 const Admin = () => {
   const [loaderState, setLoaderState] = useState("loader-hidden");
-  const [errorState, setErrorState] = useState(true);
+  const [errorState, setErrorState] = useState(false);
   const [address, setAddress] = useState("");
   const [displayId, setDisplayId] = useState(0);
   const [recievedContracts, setRecievedContracts] = useState([]);
@@ -79,6 +80,9 @@ const Admin = () => {
   }
   return (
     <>
+      <div className="home-page-container-disabled-message">
+        Only desktop devices are supported.
+      </div>
       {
         (errorState) ?
           <div className="error-message">
@@ -120,7 +124,7 @@ const Admin = () => {
                                         <div className="contract-address"> 𖡡 {el.addressOfTheLand}</div>
                                         <div className="contract-price"> ₹ {el.priceOfLand.toString()}</div>
                                         <div className="contract-area">{el.areaOfTheLand.toString()} m<sup>2</sup></div>
-                                        <div className="contract-ipfs">IPFS Documents ↪</div>
+                                        <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
                                         <div className="contract-v">Verified By Seller ✓</div>
                                         <div className={el.isVerifiedByBuyer === true ? "contract-v" : "contract-nv"}>Verified By Buyer {el.isVerifiedByBuyer === true ? "✓" : " ✕"}</div>
                                       </div>

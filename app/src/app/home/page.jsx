@@ -259,7 +259,12 @@ const Home = () => {
                                             <div className="contract-address"> 𖡡 {el.addressOfTheLand}</div>
                                             <div className="contract-price"> ₹ {el.priceOfLand.toString()}</div>
                                             <div className="contract-area">{el.areaOfTheLand.toString()} m<sup>2</sup></div>
-                                            <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
+                                            {
+                                              (el.ipfsLink) ?
+                                                <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
+                                                :
+                                                <></>
+                                            }
                                             <div className="contract-v">Verified By Seller ✓</div>
                                             <div className={el.isVerifiedByBuyer === true ? "contract-v" : "contract-nv"}>Verified By Buyer {el.isVerifiedByBuyer === true ? "✓" : " ✕"}</div>
                                             <div className={el.isVerifiedByGovt === true ? "contract-v" : "contract-nv"}>Verified By Governmet {el.isVerifiedByGovt === true ? "✓" : " ✕"}</div>
@@ -296,7 +301,12 @@ const Home = () => {
                                                     <div className="contract-address"> 𖡡 {el.addressOfTheLand}</div>
                                                     <div className="contract-price"> ₹ {el.priceOfLand.toString()}</div>
                                                     <div className="contract-area">{el.areaOfTheLand.toString()} m<sup>2</sup></div>
-                                                    <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
+                                                    {
+                                                      (el.ipfsLink) ?
+                                                        <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
+                                                        :
+                                                        <></>
+                                                    }
                                                     <div className="contract-v">Verified By Seller ✓</div>
                                                   </div>
                                                   <div className="accept-button" onClick={() => { verifyByBuyer(el.id.toString()); }}>Accept this Contract ✓</div>
@@ -329,7 +339,12 @@ const Home = () => {
                                                   <div className="contract-address"> 𖡡 {el.addressOfTheLand}</div>
                                                   <div className="contract-price"> ₹ {el.priceOfLand.toString()}</div>
                                                   <div className="contract-area">{el.areaOfTheLand.toString()} m<sup>2</sup></div>
-                                                  <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
+                                                  {
+                                                    (el.ipfsLink) ?
+                                                      <div className="contract-ipfs" onClick={() => window.open(el.ipfsLink, "_blank")}>IPFS Documents ↪</div>
+                                                      :
+                                                      <></>
+                                                  }
                                                   <div className="contract-v">Verified By Seller ✓</div>
                                                   <div className={el.isVerifiedByBuyer === true ? "contract-v" : "contract-nv"}>Verified By Buyer {el.isVerifiedByBuyer === true ? "✓" : " ✕"}</div>
                                                   <div className={el.isVerifiedByGovt === true ? "contract-v" : "contract-nv"}>Verified By Governmet {el.isVerifiedByGovt === true ? "✓" : " ✕"}</div>

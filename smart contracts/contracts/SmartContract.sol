@@ -19,8 +19,8 @@ contract SmartContract {
     struct Land {
         uint256 id;
         string addressOfTheLand;
-        uint256 priceOfLand;
-        uint256 areaOfTheLand;
+        string priceOfLand;
+        string areaOfTheLand;
         string ipfsLink;
         address sellerAddress;
         address buyerAddress;
@@ -34,8 +34,8 @@ contract SmartContract {
     //For listing the transactions
     function list(
         string memory _addressOfTheLand,
-        uint256 _priceOfLand,
-        uint256 _areaOfTheLand,
+        string memory _priceOfLand,
+        string memory _areaOfTheLand,
         string memory _ipfsLink,
         address _buyerAddress
     ) public {

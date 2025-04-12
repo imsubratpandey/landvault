@@ -62,22 +62,65 @@ const Home = () => {
       const ipfsLink = (file) ? `https://gateway.pinata.cloud/ipfs/${await uploadToPinata()}` : ``;
       setMessage("Creating Contract");
       await contractInstance.list(landAddress, price, area, ipfsLink, buyerAddress).then((tx) => {
-        tx.wait().then(() => {
+        tx.wait().then(async () => {
+          setArea("");
+          setMessage("");
+          setLandAddress("");
+          setPrice("");
+          setFile(null);
+          setBuyerAddress("");
+          setMessage("Reading Contracts");
+          await getPendingContract();
+          setDisplayId(1);
+          setLoaderState("loader-hidden");
+          setMessage("");
           console.log("Transfer Successful!");
-        }).catch((error) => {
+        }).catch(async (error) => {
           setErrorState(true);
+          setArea("");
+          setMessage("");
+          setLandAddress("");
+          setPrice("");
+          setFile(null);
+          setBuyerAddress("");
+          setMessage("Reading Contracts");
+          await getPendingContract();
+          setDisplayId(1);
+          setLoaderState("loader-hidden");
+          setMessage("");
           console.error(error);
         })
-      });
+      }).catch(async (error) => {
+        setErrorState(true);
+        setArea("");
+        setMessage("");
+        setLandAddress("");
+        setPrice("");
+        setFile(null);
+        setBuyerAddress("");
+        setMessage("Reading Contracts");
+        await getPendingContract();
+        setDisplayId(1);
+        setLoaderState("loader-hidden");
+        setMessage("");
+        console.error(error);
+      }
+      );
     }
     else {
       setErrorState(true);
+      setArea("");
+      setMessage("");
+      setLandAddress("");
+      setPrice("");
+      setFile(null);
+      setBuyerAddress("");
+      setMessage("Reading Contracts");
+      await getPendingContract();
+      setDisplayId(1);
+      setLoaderState("loader-hidden");
+      setMessage("");
     }
-    setMessage("Reading Contracts");
-    await getPendingContract();
-    setDisplayId(1);
-    setLoaderState("loader-hidden");
-    setMessage("");
   }
   const getPendingContract = async () => {
     setLoaderState("loader-visible");
@@ -137,18 +180,20 @@ const Home = () => {
       await contractInstance.verifyByBuyer(id).then((tx) => {
         tx.wait().then(async () => {
           await getRecievedContract();
+          setLoaderState("loader-hidden");
           console.log("Transfer Successful!");
         }).catch((error) => {
           setErrorState(true);
+          setLoaderState("loader-hidden");
           console.error(error);
         })
       });
     }
     else {
       setErrorState(true);
+      setLoaderState("loader-hidden");
       console.error(error);
     }
-    setLoaderState("loader-hidden");
   }
   return (
     <>

@@ -67,16 +67,19 @@ const Admin = () => {
       await contractInstance.verifyByGovt(id).then((tx) => {
         tx.wait().then(async () => {
           await getRecievedContract();
+          setLoaderState("loader-hidden");
           console.log("Transfer Successful!");
         }).catch((error) => {
+          setErrorState(true);
+          setLoaderState("loader-hidden");
           console.log(error);
         })
       });
     }
     else {
       setErrorState(true);
+      setLoaderState("loader-hidden");
     }
-    setLoaderState("loader-hidden");
   }
   return (
     <>
